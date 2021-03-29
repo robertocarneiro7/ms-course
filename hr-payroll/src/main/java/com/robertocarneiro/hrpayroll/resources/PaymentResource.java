@@ -1,0 +1,25 @@
+package com.robertocarneiro.hrpayroll.resources;
+
+import com.robertocarneiro.hrpayroll.entities.Payment;
+import com.robertocarneiro.hrpayroll.services.PaymentService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
+
+@RestController
+@RequestMapping("/payments")
+@RequiredArgsConstructor
+public class PaymentResource {
+
+    private final PaymentService service;
+
+    @GetMapping("/{workerId}/days/{days}")
+    public Payment getPayment(@PathVariable Long workerId,
+                              @PathVariable Integer days) {
+        return service.getPayment(workerId, BigDecimal.valueOf(days));
+    }
+}
