@@ -1,5 +1,6 @@
 package com.robertocarneiro.hrpayroll.resources;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.robertocarneiro.hrpayroll.entities.Payment;
 import com.robertocarneiro.hrpayroll.services.PaymentService;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,19 @@ public class PaymentResource {
 
     private final PaymentService service;
 
+    @HystrixCommand(fallbackMethod = "getPaymentAlternative")
     @GetMapping("/{workerId}/days/{days}")
     public Payment getPayment(@PathVariable Long workerId,
                               @PathVariable Integer days) {
         return service.getPayment(workerId, BigDecimal.valueOf(days));
+    }
+
+    public Payment getPaymentAlternative(Long workerId, Integer days) {
+        return Payment
+                .builder()
+                .name("Brann")
+                .dailyIncome(BigDecimal.valueOf(400.0))
+                .days(BigDecimal.valueOf(days))
+                .build();
     }
 }
