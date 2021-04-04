@@ -22,6 +22,7 @@ public class User {
     @Getter
     @Setter
     private String name;
+    @Column(unique = true)
     @Getter
     @Setter
     private String email;
